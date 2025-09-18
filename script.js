@@ -1,4 +1,5 @@
 // Copy to clipboard with fallback for file:// protocol
+console.log('Script loaded');
 function fallbackCopyTextToClipboard(text) {
     var textArea = document.createElement("textarea");
     textArea.value = text;
