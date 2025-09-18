@@ -88,31 +88,41 @@ if (creatorCredit) {
 
 // Load projects and render portfolio
 async function loadProjects() {
-    const res = await fetch('projects.json');
-    const projects = await res.json();
-    const portfolioGrid = document.getElementById('portfolio-grid');
-    const galleryNavbar = document.getElementById('gallery-navbar');
+    console.log('Loading projects...');
+    try {
+        const res = await fetch('projects.json');
+        console.log('Fetch response:', res);
+        const projects = await res.json();
+        console.log('Projects:', projects);
+        const portfolioGrid = document.getElementById('portfolio-grid');
+        const galleryNavbar = document.getElementById('gallery-navbar');
 
-    portfolioGrid.innerHTML = '';
-    galleryNavbar.innerHTML = '';
+        console.log('Portfolio grid:', portfolioGrid);
+        portfolioGrid.innerHTML = '';
+        galleryNavbar.innerHTML = '';
 
-    projects.forEach(project => {
-        // Create portfolio item
-        const item = document.createElement('div');
-        item.className = 'portfolio-item';
-        item.dataset.projectId = project.id;
-        item.innerHTML = `
-            <img src="${project.displayImage}" alt="${project.title}">
-            <div class="portfolio-item-content">
-                <h3>${project.title}</h3>
-                <p>${project.description}</p>
-            </div>
-        `;
-        item.addEventListener('click', () => {
-            window.location.href = `project.html?id=${project.id}`;
+        projects.forEach(project => {
+            console.log('Creating item for project:', project);
+            // Create portfolio item
+            const item = document.createElement('div');
+            item.className = 'portfolio-item';
+            item.dataset.projectId = project.id;
+            item.innerHTML = `
+                <img src="${project.displayImage}" alt="${project.title}">
+                <div class="portfolio-item-content">
+                    <h3>${project.title}</h3>
+                    <p>${project.description}</p>
+                </div>
+            `;
+            item.addEventListener('click', () => {
+                window.location.href = `project.html?id=${project.id}`;
+            });
+            portfolioGrid.appendChild(item);
         });
-        portfolioGrid.appendChild(item);
-    });
+        console.log('Projects loaded successfully');
+    } catch (error) {
+        console.error('Error loading projects:', error);
+    }
 }
 
 // Open gallery for a project
@@ -228,6 +238,11 @@ document.addEventListener('DOMContentLoaded', () => {
         backButton.addEventListener('click', () => {
             window.location.href = 'index.html';
         });
+    }
+
+    // Initialize for index.html
+    if (document.getElementById('portfolio-grid')) {
+        loadProjects();
     }
 
     // Main initialization for project.html
