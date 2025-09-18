@@ -145,3 +145,147 @@ document.getElementById('back-to-portfolio').addEventListener('click', () => {
 
 // Initialize
 loadProjects();
+
+// Utility to get URL query parameters
+function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
+
+// Load projects and render gallery navbar (for project.html)
+async function loadGalleryNavbar() {
+    const res = await fetch('projects.json');
+    const projects = await res.json();
+    const galleryNavbar = document.getElementById('gallery-navbar');
+    galleryNavbar.innerHTML = '';
+
+    projects.forEach(project => {
+        const navIcon = document.createElement('img');
+        navIcon.src = project.displayImage;
+        navIcon.alt = project.title;
+        navIcon.className = 'gallery-nav-icon';
+        navIcon.title = project.title;
+        navIcon.dataset.projectId = project.id;
+        navIcon.addEventListener('click', () => {
+            if (project.id !== currentProjectId) {
+                window.location.href = `project.html?id=${project.id}`;
+            }
+        });
+        galleryNavbar.appendChild(navIcon);
+    });
+}
+
+// Load gallery images for current project
+async function loadGallery(projectId) {
+    const galleryContent = document.getElementById('gallery-content');
+    galleryContent.innerHTML = '';
+
+    try {
+        const res = await fetch(`${projectId}.json`);
+        const data = await res.json();
+        window.currentImages = data.images;
+
+        data.images.forEach((src, index) => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = projectId;
+            img.className = 'gallery-image';
+            img.addEventListener('click', () => {
+                openImageModal(index);
+            });
+            galleryContent.appendChild(img);
+        });
+
+        if (data.images.length === 0) {
+            galleryContent.innerHTML = '<p>No gallery images available for this project.</p>';
+        }
+    } catch (error) {
+        galleryContent.innerHTML = '<p>Failed to load gallery images.</p>';
+    }
+}
+
+// Highlight active project icon in navbar
+function highlightActiveProject(projectId) {
+    const icons = document.querySelectorAll('.gallery-nav-icon');
+    icons.forEach(icon => {
+        if (icon.dataset.projectId === projectId) {
+            icon.classList.add('active');
+        } else {
+            icon.classList.remove('active');
+        }
+    });
+}
+
+// Back to portfolio button (for project.html)
+document.addEventListener('DOMContentLoaded', () => {
+    const backButton = document.getElementById('back-to-portfolio');
+    if (backButton) {
+        backButton.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+    }
+
+    // Main initialization for project.html
+    const currentProjectId = getQueryParam('id');
+    if (currentProjectId) {
+        loadGalleryNavbar();
+        highlightActiveProject(currentProjectId);
+        loadGallery(currentProjectId);
+    }
+});
+
+// Modal for enlarged image with navigation
+function openImageModal(index) {
+    // Create modal element
+    const modal = document.createElement('div');
+    modal.className = 'modal-window';
+
+    // Create image element
+    const img = document.createElement('img');
+    img.src = window.currentImages[index];
+    modal.appendChild(img);
+
+    // Create controls
+    const controls = document.createElement('div');
+    controls.className = 'modal-controls';
+
+    // Previous button
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'modal-button';
+    prevBtn.textContent = 'Previous';
+    prevBtn.addEventListener('click', () => {
+        if (index > 0) {
+            modal.remove();
+            openImageModal(index - 1);
+        }
+    });
+    if (index === 0) prevBtn.disabled = true;
+
+    // Close button
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-button';
+    closeBtn.textContent = 'Close';
+    closeBtn.addEventListener('click', () => {
+        modal.remove();
+    });
+
+    // Next button
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'modal-button';
+    nextBtn.textContent = 'Next';
+    nextBtn.addEventListener('click', () => {
+        if (index < window.currentImages.length - 1) {
+            modal.remove();
+            openImageModal(index + 1);
+        }
+    });
+    if (index === window.currentImages.length - 1) nextBtn.disabled = true;
+
+    controls.appendChild(prevBtn);
+    controls.appendChild(closeBtn);
+    controls.appendChild(nextBtn);
+    modal.appendChild(controls);
+
+    // Append modal to body
+    document.body.appendChild(modal);
+}
