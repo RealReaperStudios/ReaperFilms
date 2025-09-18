@@ -66,22 +66,25 @@ document.querySelectorAll('.copy-btn').forEach(button => {
     });
 });
 
-// Add click event to creator-credit to copy email
-document.getElementById('creator-credit').addEventListener('click', () => {
-    const email = 'Jamesbhart99@protonmail.com';
-    copyTextToClipboard(email).then(() => {
-        const tooltip = document.createElement('div');
-        tooltip.className = 'copy-tooltip';
-        tooltip.textContent = 'Email copied!';
-        document.body.appendChild(tooltip);
-        setTimeout(() => {
-            tooltip.classList.add('fade-out');
-            setTimeout(() => tooltip.remove(), 300);
-        }, 2000);
-    }).catch(() => {
-        alert('Failed to copy email. Please copy manually: ' + email);
+// Add click event to creator-credit to copy email (if exists)
+const creatorCredit = document.getElementById('creator-credit');
+if (creatorCredit) {
+    creatorCredit.addEventListener('click', () => {
+        const email = 'Jamesbhart99@protonmail.com';
+        copyTextToClipboard(email).then(() => {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'copy-tooltip';
+            tooltip.textContent = 'Email copied!';
+            document.body.appendChild(tooltip);
+            setTimeout(() => {
+                tooltip.classList.add('fade-out');
+                setTimeout(() => tooltip.remove(), 300);
+            }, 2000);
+        }).catch(() => {
+            alert('Failed to copy email. Please copy manually: ' + email);
+        });
     });
-});
+}
 
 // Load projects and render portfolio
 async function loadProjects() {
@@ -137,11 +140,14 @@ async function openGallery(projectId) {
     }
 }
 
-// Back to portfolio button
-document.getElementById('back-to-portfolio').addEventListener('click', () => {
-    document.getElementById('gallery').style.display = 'none';
-    document.getElementById('work').style.display = 'block';
-});
+// Back to portfolio button (for index.html gallery)
+const backToPortfolioBtn = document.getElementById('back-to-portfolio');
+if (backToPortfolioBtn && document.getElementById('gallery')) {
+    backToPortfolioBtn.addEventListener('click', () => {
+        document.getElementById('gallery').style.display = 'none';
+        document.getElementById('work').style.display = 'block';
+    });
+}
 
 // Initialize
 loadProjects();
