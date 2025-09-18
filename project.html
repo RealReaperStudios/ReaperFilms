@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reaper Studios - Project Gallery</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        .gallery-navbar {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(5, 5, 7, 0.95);
+            border-bottom: 1px solid var(--primary-color);
+            overflow-x: auto;
+        }
+        .gallery-nav-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+        .gallery-nav-icon:hover,
+        .gallery-nav-icon.active {
+            border-color: var(--primary-color);
+            box-shadow: var(--neon-shadow);
+        }
+        .gallery-content {
+            padding: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .gallery-image {
+            max-width: 300px;
+            border-radius: 8px;
+            box-shadow: var(--neon-shadow);
+        }
+        .back-button {
+            margin: 1rem 2rem;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .back-button:hover {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo-container">
+            <div class="logo-icon">
+                <img src="https://via.placeholder.com/50x50/000000/ffffff?text=RS" alt="Reaper Studios Logo" />
+            </div>
+            <div class="logo">Reaper Studios</div>
+        </div>
+        <div id="gallery-navbar" class="gallery-navbar">
+            <!-- Project icons for navigation will be dynamically loaded here -->
+        </div>
+    </nav>
+
+    <!-- Gallery Content -->
+    <main>
+        <section id="gallery-content" class="gallery-content">
+            <!-- Gallery images will be dynamically loaded here -->
+        </section>
+        <button id="back-to-portfolio" class="back-button">Back to Portfolio</button>
+    </main>
+
+    <script>
+        // Utility to get URL query parameters
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Load projects and render gallery navbar
+        async function loadProjects() {
+            const res = await fetch('projects.json');
+            const projects = await res.json();
+            const galleryNavbar = document.getElementById('gallery-navbar');
+            galleryNavbar.innerHTML = '';
+
+            projects.forEach(project => {
+                const navIcon = document.createElement('img');
+                navIcon.src = project.displayImage;
+                navIcon.alt = project.title;
+                navIcon.className = 'gallery-nav-icon';
+                navIcon.title = project.title;
+                navIcon.dataset.projectId = project.id;
+                navIcon.addEventListener('click', () => {
+                    if (project.id !== currentProjectId) {
+                        window.location.href = `project.html?id=${project.id}`;
+                    }
+                });
+                galleryNavbar.appendChild(navIcon);
+            });
+        }
+
+        // Load gallery images for current project
+        async function loadGallery(projectId) {
+            const galleryContent = document.getElementById('gallery-content');
+            galleryContent.innerHTML = '';
+            try {
+                const res = await fetch(`${projectId}.json`);
+                const data = await res.json();
+                data.images.forEach(src => {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.alt = projectId;
+                    img.className = 'gallery-image';
+                    galleryContent.appendChild(img);
+                });
+            } catch (error) {
+                galleryContent.innerHTML = '<p>Failed to load gallery images.</p>';
+            }
+        }
+
+        // Highlight active project icon in navbar
+        function highlightActiveProject(projectId) {
+            const icons = document.querySelectorAll('.gallery-nav-icon');
+            icons.forEach(icon => {
+                if (icon.dataset.projectId === projectId) {
+                    icon.classList.add('active');
+                } else {
+                    icon.classList.remove('active');
+                }
+            });
+        }
+
+        // Back to portfolio button
+        document.getElementById('back-to-portfolio').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+
+        // Main
+        const currentProjectId = getQueryParam('id');
+        if (!currentProjectId) {
+            document.body.innerHTML = '<p style="color: white; padding: 2rem;">No project specified. Please go back to the <a href="index.html">portfolio</a>.</p>';
+        } else {
+            loadProjects().then(() => {
+                highlightActiveProject(currentProjectId);
+                loadGallery(currentProjectId);
+            });
+        }
+    </script>
+</body>
+</html>
