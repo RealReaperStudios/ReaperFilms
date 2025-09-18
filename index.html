@@ -186,33 +186,8 @@
     <script>
         // Load projects and render portfolio
         async function loadProjects() {
-            // Inline projects data to avoid fetch issues with file:// protocol
-            const projects = [
-                {
-                    "id": "haunted-roots",
-                    "title": "Haunted Roots",
-                    "description": "A chilling tale of ancestral spirits and dark secrets.",
-                    "displayImage": "https://via.placeholder.com/300x250/333/fff?text=Haunted+Roots"
-                },
-                {
-                    "id": "shadows-of-the-abyss",
-                    "title": "Shadows of the Abyss",
-                    "description": "Dive into the depths of despair and madness.",
-                    "displayImage": "https://via.placeholder.com/300x250/333/fff?text=Shadows+of+the+Abyss"
-                },
-                {
-                    "id": "echoes-of-the-damned",
-                    "title": "Echoes of the Damned",
-                    "description": "Whispers from the other side haunt the living.",
-                    "displayImage": "https://via.placeholder.com/300x250/333/fff?text=Echoes+of+the+Damned"
-                },
-                {
-                    "id": "reapers-harvest",
-                    "title": "Reaper's Harvest",
-                    "description": "The grim reaper collects his due in this horror anthology.",
-                    "displayImage": "https://via.placeholder.com/300x250/333/fff?text=Reaper%27s+Harvest"
-                }
-            ];
+            const res = await fetch('projects.json');
+            const projects = await res.json();
             const portfolioGrid = document.getElementById('portfolio-grid');
             const galleryNavbar = document.getElementById('gallery-navbar');
 

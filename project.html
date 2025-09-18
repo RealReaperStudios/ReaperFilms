@@ -110,6 +110,8 @@
             background: var(--accent-color);
         }
     </style>
+
+
 </head>
 <body>
     <!-- Navbar -->
@@ -140,36 +142,10 @@
             return urlParams.get(param);
         }
 
-        // Inline projects data
-        const projects = [
-            {
-                "id": "haunted-roots",
-                "title": "Haunted Roots",
-                "description": "A chilling tale of ancestral spirits and dark secrets.",
-                "displayImage": "https://via.placeholder.com/300x250/333/fff?text=Haunted+Roots"
-            },
-            {
-                "id": "shadows-of-the-abyss",
-                "title": "Shadows of the Abyss",
-                "description": "Dive into the depths of despair and madness.",
-                "displayImage": "https://via.placeholder.com/300x250/333/fff?text=Shadows+of+the+Abyss"
-            },
-            {
-                "id": "echoes-of-the-damned",
-                "title": "Echoes of the Damned",
-                "description": "Whispers from the other side haunt the living.",
-                "displayImage": "https://via.placeholder.com/300x250/333/fff?text=Echoes+of+the+Damned"
-            },
-            {
-                "id": "reapers-harvest",
-                "title": "Reaper's Harvest",
-                "description": "The grim reaper collects his due in this horror anthology.",
-                "displayImage": "https://via.placeholder.com/300x250/333/fff?text=Reaper%27s+Harvest"
-            }
-        ];
-
         // Load projects and render gallery navbar
-        function loadProjects() {
+        async function loadProjects() {
+            const res = await fetch('projects.json');
+            const projects = await res.json();
             const galleryNavbar = document.getElementById('gallery-navbar');
             galleryNavbar.innerHTML = '';
 
@@ -190,51 +166,31 @@
         }
 
         // Load gallery images for current project
-        function loadGallery(projectId) {
+        async function loadGallery(projectId) {
             const galleryContent = document.getElementById('gallery-content');
             galleryContent.innerHTML = '';
 
-            // Inline project images data
-            const projectImages = {
-                'haunted-roots': [
-                    'https://via.placeholder.com/400x300/333/fff?text=Haunted+Roots+1',
-                    'https://via.placeholder.com/400x300/333/fff?text=Haunted+Roots+2',
-                    'https://via.placeholder.com/400x300/333/fff?text=Haunted+Roots+3',
-                    'https://via.placeholder.com/400x300/333/fff?text=Haunted+Roots+4',
-                    'https://via.placeholder.com/400x300/333/fff?text=Haunted+Roots+5',
-                    'https://via.placeholder.com/400x300/333/fff?text=Haunted+Roots+6',
-                    'https://via.placeholder.com/400x300/333/fff?text=Haunted+Roots+7'
-                ],
-                'shadows-of-the-abyss': [
-                    'https://via.placeholder.com/400x300/333/fff?text=Shadows+of+the+Abyss+1',
-                    'https://via.placeholder.com/400x300/333/fff?text=Shadows+of+the+Abyss+2'
-                ],
-                'echoes-of-the-damned': [
-                    'https://via.placeholder.com/400x300/333/fff?text=Echoes+of+the+Damned+1',
-                    'https://via.placeholder.com/400x300/333/fff?text=Echoes+of+the+Damned+2'
-                ],
-                'reapers-harvest': [
-                    'https://via.placeholder.com/400x300/333/fff?text=Reaper%27s+Harvest+1',
-                    'https://via.placeholder.com/400x300/333/fff?text=Reaper%27s+Harvest+2'
-                ]
-            };
+            try {
+                const res = await fetch(`${projectId}.json`);
+                const data = await res.json();
+                window.currentImages = data.images;
 
-            const data = { images: projectImages[projectId] || [] };
-            window.currentImages = data.images;
-
-            data.images.forEach((src, index) => {
-                const img = document.createElement('img');
-                img.src = src;
-                img.alt = projectId;
-                img.className = 'gallery-image';
-                img.addEventListener('click', () => {
-                    openImageModal(index);
+                data.images.forEach((src, index) => {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.alt = projectId;
+                    img.className = 'gallery-image';
+                    img.addEventListener('click', () => {
+                        openImageModal(index);
+                    });
+                    galleryContent.appendChild(img);
                 });
-                galleryContent.appendChild(img);
-            });
 
-            if (data.images.length === 0) {
-                galleryContent.innerHTML = '<p>No gallery images available for this project.</p>';
+                if (data.images.length === 0) {
+                    galleryContent.innerHTML = '<p>No gallery images available for this project.</p>';
+                }
+            } catch (error) {
+                galleryContent.innerHTML = '<p>Failed to load gallery images.</p>';
             }
         }
 
