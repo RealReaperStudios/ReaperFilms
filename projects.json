@@ -1,20 +1,8 @@
 [
   {
-    "id": "shadows-of-the-abyss",
-    "title": "Shadows of the Abyss",
-    "description": "A horror thriller exploring the depths of human fear.",
-    "displayImage": "https://via.placeholder.com/300x250/333333/ffffff?text=Film+1"
-  },
-  {
-    "id": "echoes-of-the-damned",
-    "title": "Echoes of the Damned",
-    "description": "A supernatural drama that haunts the soul.",
-    "displayImage": "https://via.placeholder.com/300x250/333333/ffffff?text=Film+2"
-  },
-  {
-    "id": "reapers-harvest",
-    "title": "Reaper's Harvest",
-    "description": "An anthology of terror stories from beyond.",
-    "displayImage": "https://via.placeholder.com/300x250/333333/ffffff?text=Film+3"
+    "id": "haunted-roots",
+    "title": "Haunted Roots",
+    "description": "A chilling tale of ancestral spirits and dark secrets.",
+    "displayImage": "images/haunted-roots/haunted-roots.png"
   }
 ]

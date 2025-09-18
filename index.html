@@ -208,16 +208,6 @@
                     </a>
                 `;
                 portfolioGrid.appendChild(item);
-
-                // Create gallery navbar icon
-                const navIcon = document.createElement('img');
-                navIcon.src = project.displayImage;
-                navIcon.alt = project.title;
-                navIcon.className = 'gallery-nav-icon';
-                navIcon.title = project.title;
-                navIcon.dataset.projectId = project.id;
-                navIcon.addEventListener('click', () => openGallery(project.id));
-                galleryNavbar.appendChild(navIcon);
             });
         }
 
