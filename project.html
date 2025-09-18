@@ -116,13 +116,16 @@
             try {
                 const res = await fetch(`${projectId}.json`);
                 const data = await res.json();
-                data.images.forEach(src => {
-                    const img = document.createElement('img');
-                    img.src = src;
-                    img.alt = projectId;
-                    img.className = 'gallery-image';
-                    galleryContent.appendChild(img);
-                });
+        data.images.forEach(src => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = projectId;
+            img.className = 'gallery-image';
+            img.addEventListener('click', () => {
+                openImageModal(src);
+            });
+            galleryContent.appendChild(img);
+        });
             } catch (error) {
                 galleryContent.innerHTML = '<p>Failed to load gallery images.</p>';
             }
@@ -154,6 +157,28 @@
                 highlightActiveProject(currentProjectId);
                 loadGallery(currentProjectId);
             });
+        }
+    </script>
+
+    <script>
+        // Modal for enlarged image
+        function openImageModal(src) {
+            // Create modal element
+            const modal = document.createElement('div');
+            modal.className = 'image-modal';
+
+            // Create image element
+            const img = document.createElement('img');
+            img.src = src;
+            modal.appendChild(img);
+
+            // Close modal on click
+            modal.addEventListener('click', () => {
+                modal.remove();
+            });
+
+            // Append modal to body
+            document.body.appendChild(modal);
         }
     </script>
 </body>
