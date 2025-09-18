@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+5<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -29,7 +29,7 @@
         <img src="images/430c89831e92b2c732c276c7d799eda7.webp" alt="Reaper Studios Hero Image" style="width: 100%; height: 100vh; object-fit: contain; position: absolute; top: 0; left: 0; z-index: -1; opacity: 0.15;">
         <h1>Welcome to Reaper Studios</h1>
         <p>Where darkness meets creativity. Crafting cinematic nightmares and visual horrors.</p>
-        <button class="cta-button">Explore Our Work</button>
+        <button class="cta-button" onclick="document.getElementById('work').scrollIntoView({behavior: 'smooth'});">Explore Our Work</button>
     </section>
 
     <!-- Work Section -->
@@ -186,8 +186,33 @@
     <script>
         // Load projects and render portfolio
         async function loadProjects() {
-            const res = await fetch('projects.json');
-            const projects = await res.json();
+            // Inline projects data to avoid fetch issues with file:// protocol
+            const projects = [
+                {
+                    "id": "haunted-roots",
+                    "title": "Haunted Roots",
+                    "description": "A chilling tale of ancestral spirits and dark secrets.",
+                    "displayImage": "https://via.placeholder.com/300x250/333/fff?text=Haunted+Roots"
+                },
+                {
+                    "id": "shadows-of-the-abyss",
+                    "title": "Shadows of the Abyss",
+                    "description": "Dive into the depths of despair and madness.",
+                    "displayImage": "https://via.placeholder.com/300x250/333/fff?text=Shadows+of+the+Abyss"
+                },
+                {
+                    "id": "echoes-of-the-damned",
+                    "title": "Echoes of the Damned",
+                    "description": "Whispers from the other side haunt the living.",
+                    "displayImage": "https://via.placeholder.com/300x250/333/fff?text=Echoes+of+the+Damned"
+                },
+                {
+                    "id": "reapers-harvest",
+                    "title": "Reaper's Harvest",
+                    "description": "The grim reaper collects his due in this horror anthology.",
+                    "displayImage": "https://via.placeholder.com/300x250/333/fff?text=Reaper%27s+Harvest"
+                }
+            ];
             const portfolioGrid = document.getElementById('portfolio-grid');
             const galleryNavbar = document.getElementById('gallery-navbar');
 
