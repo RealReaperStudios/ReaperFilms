@@ -264,6 +264,27 @@ body {
     background: linear-gradient(to top, var(--card-bg), transparent);
 }
 
+.portfolio-item {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.portfolio-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.portfolio-link:hover,
+.portfolio-link:focus,
+.portfolio-link:active {
+    text-decoration: none;
+    color: inherit;
+}
+
 .portfolio-item h3 {
     color: var(--primary-color);
     font-size: 1.5rem;
@@ -272,6 +293,7 @@ body {
 
 .portfolio-item p {
     color: var(--text-muted);
+    flex-grow: 1;
 }
 
 .error-message {
