@@ -149,8 +149,10 @@ if (backToPortfolioBtn && document.getElementById('gallery')) {
     });
 }
 
-// Initialize
-loadProjects();
+// Initialize (for index.html)
+if (document.getElementById('portfolio-grid')) {
+    loadProjects();
+}
 
 // Utility to get URL query parameters
 function getQueryParam(param) {
@@ -159,7 +161,7 @@ function getQueryParam(param) {
 }
 
 // Load projects and render gallery navbar (for project.html)
-async function loadGalleryNavbar() {
+async function loadGalleryNavbar(currentProjectId) {
     const res = await fetch('projects.json');
     const projects = await res.json();
     const galleryNavbar = document.getElementById('gallery-navbar');
@@ -234,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Main initialization for project.html
     const currentProjectId = getQueryParam('id');
     if (currentProjectId) {
-        loadGalleryNavbar();
+        loadGalleryNavbar(currentProjectId);
         highlightActiveProject(currentProjectId);
         loadGallery(currentProjectId);
     }
