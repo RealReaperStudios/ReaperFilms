@@ -149,10 +149,7 @@ if (backToPortfolioBtn && document.getElementById('gallery')) {
     });
 }
 
-// Initialize (for index.html)
-if (document.getElementById('portfolio-grid')) {
-    loadProjects();
-}
+// Initialize moved to DOMContentLoaded
 
 // Utility to get URL query parameters
 function getQueryParam(param) {
