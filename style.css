@@ -268,21 +268,7 @@ body {
     min-height: 400px;
     display: flex;
     flex-direction: column;
-}
-
-.portfolio-link {
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.portfolio-link:hover,
-.portfolio-link:focus,
-.portfolio-link:active {
-    text-decoration: none;
-    color: inherit;
+    cursor: pointer;
 }
 
 .portfolio-item h3 {
