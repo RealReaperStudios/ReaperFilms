@@ -4,5 +4,11 @@
     "title": "Haunted Roots",
     "description": "A chilling tale of ancestral spirits and dark secrets.",
     "displayImage": "images/haunted-roots/haunted-roots.png"
+  },
+  {
+    "id": "gore-ville",
+    "title": "Gore-Ville",
+    "description": "A blood-soaked nightmare in a town of terror.",
+    "displayImage": "images/Gore-Ville/place-holder.png"
   }
 ]

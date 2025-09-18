@@ -201,7 +201,7 @@
                 item.dataset.projectId = project.id;
                 item.innerHTML = `
                     <a href="project.html?id=${project.id}" class="portfolio-link">
-                        <img src="${project.displayImage}" alt="${project.title}" style="width: auto; height: auto;">
+                        <img src="${project.displayImage}" alt="${project.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; object-fit: contain;">
                         <div class="portfolio-item-content">
                             <h3>${project.title}</h3>
                             <p>${project.description}</p>
